@@ -17,6 +17,19 @@ def get_size(elfname, pmname):
   assert pm, pmname
   return pm.get_text_size()
 
+# TODO: Get rid of do_ignore.
+#       The first two calls of the benchmark program should not be registered
+#       as an attack. Fix this in the benchmark framework, instead of
+#       hardcoding it here. (under time pressure now...)
+def do_ignore(benchmark, experiment):
+
+  #  - keypad_init call, it does not contain secret-dependent control-flow
+  if benchmark == "keypad" and experiment == "experiment01": return True
+  #  - first call to keypad_poll, it sets up secure linking (high latency)
+  if benchmark == "keypad" and experiment == "experiment02": return True
+
+  return False
+
 run_times = {}
 for root, _, files in os.walk("."):
   for fn in sorted(files):
@@ -24,19 +37,20 @@ for root, _, files in os.walk("."):
     if m:
       benchmark  = m.group(1)
       experiment = m.group(2)
-      velf = '%s/%s.vulnerable' % (root, benchmark)
-      vsignals = '%s.%s.signals.txt' % (velf, experiment)
+      if not do_ignore(benchmark, experiment):
+        velf = '%s/%s.vulnerable' % (root, benchmark)
+        vsignals = '%s.%s.signals.txt' % (velf, experiment)
 
-      # Register the running time of this vulnerable experiment. It will be
-      # used later for computing the overhead of this experiment relative to
-      # the maximum vulnerable running time of all experiments done with this
-      # benchmark.
-      vcycles = get_cycles(vsignals)
-      if not benchmark in run_times:
-          run_times[benchmark] = []
-      run_times[benchmark].append(get_cycles(vsignals))
+        # Register the running time of this vulnerable experiment. It will be
+        # used later for computing the overhead of this experiment relative to
+        # the maximum vulnerable running time of all experiments done with this
+        # benchmark.
+        vcycles = get_cycles(vsignals)
+        if not benchmark in run_times:
+            run_times[benchmark] = []
+        run_times[benchmark].append(get_cycles(vsignals))
 
-# TODO: Clean this up. Factor out the common code of the previous loop.
+# TODO: Factor out the common code of the previous loop.
 labels          = []
  # Cycle overheads relative to the corresponding vulnerable experiment
 acycleoverheads = []
@@ -50,38 +64,39 @@ for root, _, files in os.walk("."):
     if m:
       benchmark  = m.group(1)
       experiment = m.group(2)
-      labels.append('%s %s' % \
+      if not do_ignore(benchmark, experiment):
+        labels.append('%s %s' % \
                      (benchmark, str.replace(experiment, "experiment", "exp")))
 
-      velf = '%s/%s.vulnerable' % (root, benchmark)
-      helf = '%s/%s.nemdef' % (root, benchmark)
+        velf = '%s/%s.vulnerable' % (root, benchmark)
+        helf = '%s/%s.nemdef' % (root, benchmark)
 
-      # Determine the space overhead
-      vsize = get_size(velf, benchmark)
-      hsize = get_size(helf, benchmark)
-      sizeoverhead = float(hsize)/vsize
-      sizeoverheads.append(sizeoverhead)
+        # Determine the space overhead
+        vsize = get_size(velf, benchmark)
+        hsize = get_size(helf, benchmark)
+        sizeoverhead = float(hsize)/vsize
+        sizeoverheads.append(sizeoverhead)
 
-      # Determine the time overheads
-      vsignals = '%s.%s.signals.txt' % (velf, experiment)
-      hsignals = '%s.%s.signals.txt' % (helf, experiment)
-      vcycles = get_cycles(vsignals)
-      hcycles = get_cycles(hsignals)
-      acycleoverhead = float(hcycles)/vcycles
-      acycleoverheads.append(acycleoverhead)
-      rcycleoverhead = float(hcycles)/max(run_times[benchmark])
-      rcycleoverheads.append(rcycleoverhead)
-      
-      sys.stdout.write("%s," % benchmark)
-      sys.stdout.write("%d," % vsize)
-      sys.stdout.write("%d," % hsize)
-      sys.stdout.write("%.02f," % round(sizeoverhead, 2))
-      sys.stdout.write("%s," % experiment)
-      sys.stdout.write("%d," % vcycles)
-      sys.stdout.write("%d," % hcycles)
-      sys.stdout.write("%.02f," % round(acycleoverhead, 2))
-      sys.stdout.write("%.02f," % round(rcycleoverhead, 2))
-      sys.stdout.write("\n")
+        # Determine the time overheads
+        vsignals = '%s.%s.signals.txt' % (velf, experiment)
+        hsignals = '%s.%s.signals.txt' % (helf, experiment)
+        vcycles = get_cycles(vsignals)
+        hcycles = get_cycles(hsignals)
+        acycleoverhead = float(hcycles)/vcycles
+        acycleoverheads.append(acycleoverhead)
+        rcycleoverhead = float(hcycles)/max(run_times[benchmark])
+        rcycleoverheads.append(rcycleoverhead)
+        
+        sys.stdout.write("%s," % benchmark)
+        sys.stdout.write("%d," % vsize)
+        sys.stdout.write("%d," % hsize)
+        sys.stdout.write("%.02f," % round(sizeoverhead, 2))
+        sys.stdout.write("%s," % experiment)
+        sys.stdout.write("%d," % vcycles)
+        sys.stdout.write("%d," % hcycles)
+        sys.stdout.write("%.02f," % round(acycleoverhead, 2))
+        sys.stdout.write("%.02f," % round(rcycleoverhead, 2))
+        sys.stdout.write("\n")
 
 import numpy as np
 import matplotlib

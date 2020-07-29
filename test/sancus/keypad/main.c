@@ -34,10 +34,16 @@ int main(void)
    * mockup
    */
   ATTACK(keypad_poll, 42);
+#if 0 /* For now, only use the keypad benchmark for determining the average
+       * performance overhead of the nemdef transformation. Once the compiler
+       * bug, related to the handling of two-way branches in shared basic 
+       * blocks, has been fixed, enable the underlying calls again.
+       */
   ATTACK(keypad_poll, 42);
   ATTACK(keypad_poll, 42);
   ATTACK(keypad_poll, 42);
   ATTACK(keypad_poll, 42);
+#endif
 
   EXIT();
 
