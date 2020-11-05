@@ -1,5 +1,7 @@
 Makefile.local
+Makefilz
 .*.swp
+
 
 /msp430-gcc-*
 sancus-main
