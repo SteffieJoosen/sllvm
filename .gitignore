@@ -1,5 +1,5 @@
 Makefile.local
-Makefilz
+Makefile
 .*.swp
 
 
@@ -13,3 +13,5 @@ install
 compile_commands.json
 
 clang-sancus_*.deb
+
+
