@@ -68,15 +68,15 @@ SANCUS_TRANSFORM_FLAGS += --vendor-id 0x$(VENDOR_ID)
 LLCFLAGS =
 LLCFLAGS += -O3
 
-LLCFLAGSDMADEF =
-LLCFLAGSDMADEF += -O3
+LLCFLAGSNEMDEF =
+LLCFLAGSNEMDEF += -O3
 # TODO: Temporarily disable -verify-machineinstrs option until the code
 #       generation bug of the keypad benchmark has been fixed
-#LLCFLAGSDMADEF += -verify-machineinstrs
-LLCFLAGSDMADEF += -msp430-dma-defender-enable=true
-LLCFLAGSDMADEF += -msp430-dma-defender-save-cfg=true
-#LLCFLAGSDMADEF += -debug-only=msp430-dma-defender
-#LLCFLAGSDMADEF += -msp430-dma-defender-emit-cfg=true
+#LLCFLAGSNEMDEF += -verify-machineinstrs
+LLCFLAGSNEMDEF += -msp430-nemesis-defender-enable=true
+LLCFLAGSNEMDEF += -msp430-nemesis-defender-save-cfg=true
+#LLCFLAGSNEMDEF += -debug-only=msp430-nemesis-defender
+#LLCFLAGSNEMDEF += -msp430-nemesis-defender-emit-cfg=true
 
 ASFLAGS =
 ASFLAGS += $(INCFLAGS)
@@ -111,7 +111,7 @@ LOADFLAGS += -baudrate $(FPGA_RATE)
 .PRECIOUS: %.sllvm.ll
 .PRECIOUS: %.sancus.ll
 .PRECIOUS: %.s
-.PRECIOUS: %.dmadef.s
+.PRECIOUS: %.nemdef.s
 .PRECIOUS: %.nomac
 
 .PHONY: all
@@ -129,8 +129,8 @@ all: $(EXE).objdump
 %.s: %.sancus.ll
 	$(LLC) $(LLCFLAGS) $< -o $@
 
-%.dmadef.s: %.sancus.ll
-	$(LLC) $(LLCFLAGSDMADEF) $< -o $@
+%.nemdef.s: %.sancus.ll
+	$(LLC) $(LLCFLAGSNEMDEF) $< -o $@
 
 %.o: %.s
 	$(AS) $(ASFLAGS) -c $< -o $@
@@ -188,7 +188,7 @@ clean:
 	$(RM) *.experiment*.txt
 	$(RM) *.experiment*.svg
 	$(RM) *.experiment*.pdf
-	$(RM) *.dmadef.pdf
-	$(RM) *.dmadef.svg
+	$(RM) *.nemdef.pdf
+	$(RM) *.nemdef.svg
 	$(RM) *.vulnerable.svg
 	$(RM) *.vulnerable.pdf

@@ -35,80 +35,91 @@ MKDIR = mkdir -p
 PYTHON = PYTHONPATH=$(PYTHONPATH) python3
 
 # 1) Nemdef unit tests (have high code coverage)
-DMADEF =
-DMADEF += triangle
+NEMDEF =
+NEMDEF += triangle
+NEMDEF += diamond
+NEMDEF += fork
+NEMDEF += multifork
+NEMDEF += call
+NEMDEF += indirect
+NEMDEF += ifcompound
+NEMDEF += loop
+NEMDEF += ifthenloop
+NEMDEF += ifthenloopif
+NEMDEF += ifthenlooploop
+NEMDEF += ifthenlooplooptail
 
 # 2) Compiler runtime functions (e.g. Routines for integer arithmetic)
 #   o libgcc      (GCC) : gcc-8.2.0/libgcc/config/msp430/mpy.c
 #                        used by MSP430 GCC
 #                        (MSPGCC has a similar timing channel [Cuyt])
 #   o compiler-rt (LLVM): has no support for MSP430
-DMADEF += mulhi3
+NEMDEF += mulhi3
 
 # 3) Primitives from cryptographic libraries
 # [Agat, 2000]
-#DMADEF +=
+#NEMDEF +=
 # [Molnar, 2005] (section 5.1)
-#DMADEF +=
+#NEMDEF +=
 # [Coppens, 2009] (section 4)
 # "The following is an example in pseudocode based on Applied Cryptography by
 #   Bruce Schneier." [Wikipedia]
-DMADEF += modexp
+NEMDEF += modexp
 # [Mantel, 2015] (sections 2 and 4)
-#DMADEF +=
+#NEMDEF +=
 # [Almeida, 2016]
-#DMADEF +=
+#NEMDEF +=
 # [Dewald, 2017] (section 6.2) => source code is in paper
-#DMADEF +=
+#NEMDEF +=
 # [Wu, 2018] (section 7)
-#DMADEF += threeway   # Useless since LLVM generates CT code for mu() :-/
+#NEMDEF += threeway   # Useless since LLVM generates CT code for mu() :-/
 # [Simon, 2018] (section 4.1.2)
 # OpenSSL, mbedTLS
-#DMADEF +=
+#NEMDEF +=
 # [Cauligi, 2019] (section 5.1)
-#DMADEF +=
+#NEMDEF +=
 
 # 4) Sancus applications (inspired on applications from Nemesis paper)
-DMADEF += bsl
-DMADEF += keypad   # TODO: Support "secret return types" (or use dummy param)
+NEMDEF += bsl
+NEMDEF += keypad   # TODO: Support "secret return types" (or use dummy param)
 
 #--------------------------------------------------------------------------
 
-DMADEF_ALL   = $(DMADEF:=.dmadef-all)
-DMADEF_SIM   = $(DMADEF:=.dmadef-sim)
-DMADEF_PP    = $(DMADEF:=.dmadef-pp)
-DMADEF_CLEAN = $(DMADEF:=.dmadef-clean)
-DMADEF_FORCE = $(DMADEF:=.dmadef-force)
+NEMDEF_ALL   = $(NEMDEF:=.nemdef-all)
+NEMDEF_SIM   = $(NEMDEF:=.nemdef-sim)
+NEMDEF_PP    = $(NEMDEF:=.nemdef-pp)
+NEMDEF_CLEAN = $(NEMDEF:=.nemdef-clean)
+NEMDEF_FORCE = $(NEMDEF:=.nemdef-force)
 
-dmadef-all  : $(DMADEF_ALL)
+nemdef-all  : $(NEMDEF_ALL)
 
-dmadef-sim  : $(DMADEF_SIM)
+nemdef-sim  : $(NEMDEF_SIM)
 
-dmadef-pp   : $(DMADEF_PP)
+nemdef-pp   : $(NEMDEF_PP)
 	$(RMDIR) $(RESULT_DIR)
 	$(MKDIR) $(RESULT_DIR)
 	$(PYTHON) pp2.py > $(RESULT_DIR)/performance.csv
 
-dmadef-clean: $(DMADEF_CLEAN)
+nemdef-clean: $(NEMDEF_CLEAN)
 
-dmadef-force: $(DMADEF_FORCE)
+nemdef-force: $(NEMDEF_FORCE)
 
-$(DMADEF_ALL): %.dmadef-all:
+$(NEMDEF_ALL): %.nemdef-all:
 	$(MAKE) -C $* -f Makefile.vulnerable all
-	$(MAKE) -C $* -f Makefile.dmadef     all
+	$(MAKE) -C $* -f Makefile.nemdef     all
 
-$(DMADEF_SIM): %.dmadef-sim:
+$(NEMDEF_SIM): %.nemdef-sim:
 	$(MAKE) -C $* -f Makefile.vulnerable sim
-	$(MAKE) -C $* -f Makefile.dmadef     sim
+	$(MAKE) -C $* -f Makefile.nemdef     sim
 
-$(DMADEF_PP): %.dmadef-pp:
+$(NEMDEF_PP): %.nemdef-pp:
 	$(MAKE) -C $* -f Makefile.vulnerable pp
-	$(MAKE) -C $* -f Makefile.dmadef     pp
+	$(MAKE) -C $* -f Makefile.nemdef     pp
 
-$(DMADEF_CLEAN): %.dmadef-clean:
+$(NEMDEF_CLEAN): %.nemdef-clean:
 	$(MAKE) -C $* -f Makefile.vulnerable clean
-	$(MAKE) -C $* -f Makefile.dmadef     clean
+	$(MAKE) -C $* -f Makefile.nemdef     clean
 
-$(DMADEF_FORCE): %.dmadef-force:
-	$(MAKE) $*.dmadef-clean
-	$(MAKE) $*.dmadef-all
+$(NEMDEF_FORCE): %.nemdef-force:
+	$(MAKE) $*.nemdef-clean
+	$(MAKE) $*.nemdef-all
