@@ -35,6 +35,7 @@ MKDIR = mkdir -p
 PYTHON = PYTHONPATH=$(PYTHONPATH) python3
 
 # 1) Nemdef unit tests (have high code coverage)
+<<<<<<< Updated upstream
 NEMDEF =
 NEMDEF += triangle
 NEMDEF += diamond
@@ -48,6 +49,24 @@ NEMDEF += ifthenloop
 NEMDEF += ifthenloopif
 NEMDEF += ifthenlooploop
 NEMDEF += ifthenlooplooptail
+=======
+DMADEF =
+DMADEF += triangle
+DMADEF += triangle1
+DMADEF += dmadef_combi_class5
+DMADEF += test
+DMADEF += diamond
+DMADEF += fork
+DMADEF += multifork
+DMADEF += call
+DMADEF += indirect
+DMADEF += ifcompound
+DMADEF += loop
+DMADEF += ifthenloop
+DMADEF += ifthenloopif
+DMADEF += ifthenlooploop
+DMADEF += ifthenlooplooptail
+>>>>>>> Stashed changes
 
 # 2) Compiler runtime functions (e.g. Routines for integer arithmetic)
 #   o libgcc      (GCC) : gcc-8.2.0/libgcc/config/msp430/mpy.c
