@@ -36,9 +36,8 @@ PYTHON = PYTHONPATH=$(PYTHONPATH) python3
 
 # 1) Nemdef unit tests (have high code coverage)
 DMADEF =
+DMADEF += dma_class_5
 DMADEF += triangle
-DMADEF += triangle1
-DMADEF += dmadef_combi_class5
 DMADEF += diamond
 DMADEF += fork
 DMADEF += multifork
