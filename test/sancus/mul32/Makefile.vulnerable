@@ -1,0 +1,13 @@
+EXE = mul32.vulnerable
+
+#mul32.ll: CFLAGS += -Os
+	
+#mul32.s: LLCFLAGS += -print-machineinstrs
+#mul32.s: LLCFLAGS += -filter-print-funcs=mul32_
+
+include ../Makefile.include
+
+LDFLAGS += -lsancus-step
+
+$(EXE).nomac: mul32.o
+$(EXE).nomac: main.o

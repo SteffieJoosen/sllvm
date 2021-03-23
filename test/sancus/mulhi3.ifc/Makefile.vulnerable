@@ -1,0 +1,8 @@
+EXE = mulhi3.ifc.vulnerable
+
+include ../Makefile.include
+
+LDFLAGS += -lsancus-step
+
+$(EXE).nomac: mulhi3.o
+$(EXE).nomac: main.o

@@ -1,0 +1,15 @@
+EXE = mul32.nemdef
+
+#mul32.ll: CFLAGS += -Os
+
+#mul32.nemdef.s: LLCFLAGSNEMDEF += -debug-only=msp430-nemesis-defender
+#mul32.nemdef.s: LLCFLAGSNEMDEF += -msp430-nemesis-defender-emit-cfg=true
+#mul32.nemdef.s: LLCFLAGSNEMDEF += -print-machineinstrs
+#mul32.nemdef.s: LLCFLAGSNEMDEF += -filter-print-funcs=mul32_
+
+include ../Makefile.include
+
+LDFLAGS += -lsancus-step
+
+$(EXE).nomac: mul32.nemdef.o
+$(EXE).nomac: main.o

@@ -1,15 +1,8 @@
 #include "bsl.h"
 
-#define MASS_ERASE_DELAY 0x8000
-
 #define LOCKED   0x00
 #define UNLOCKED 0xA5A4
 static unsigned LockedStatus = LOCKED;
-
-static unsigned BSL430_massErase(void)
-{
-  return SUCCESSFUL_OPERATION;
-}
 
 /*
  * The C code below is based on the invulnerable password comparison routine of
@@ -30,7 +23,12 @@ char BSL430_unlock_BSL(__attribute__((secret)) char * data)
 {
   int    i;
   int    retValue = 0;
-  char * ivt      = (char *) INTERRUPT_VECTOR_START;
+  int    result;
+#if 0
+  char * ivt = (char *) INTERRUPT_VECTOR_START;
+#else
+  char *ivt = "0123456789ABCDEF";
+#endif
 
   for (i=0; i <= (INTERRUPT_VECTOR_END - INTERRUPT_VECTOR_START); i++, ivt++)
   {
@@ -40,7 +38,10 @@ char BSL430_unlock_BSL(__attribute__((secret)) char * data)
    * prevent timing side-channels. */
     retValue |=  *ivt ^ data[i];
 #else
-   /* This vulnerable version is based on published asm code from v2.12. */
+   /* This vulnerable version is based on published asm code from v2.12.
+    * as explained in
+    * https://github.com/jovanbulck/nemesis/blob/master/sancus/bsl/sm-bsl.c */
+
     if (*ivt != data[i])
     {
       retValue |= 0x40;
@@ -52,12 +53,14 @@ char BSL430_unlock_BSL(__attribute__((secret)) char * data)
   {
     LockedStatus = UNLOCKED;
 
-    return SUCCESSFUL_OPERATION;
+    result = SUCCESSFUL_OPERATION;
   }
   else
   {
-    (void) BSL430_massErase();
+    LockedStatus = LOCKED;
 
-    return BSL_PASSWORD_ERROR;
+    result = BSL_PASSWORD_ERROR;
   }
+
+  return result;
 }

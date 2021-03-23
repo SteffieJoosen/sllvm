@@ -1,0 +1,11 @@
+EXE = mulmod8.ifc.vulnerable
+
+#mulmod8.s: LLCFLAGS += -print-machineinstrs
+#mulmod8.s: LLCFLAGS += -filter-print-funcs=mulmod8_
+
+include ../Makefile.include
+
+LDFLAGS += -lsancus-step
+
+$(EXE).nomac: mulmod8.o
+$(EXE).nomac: main.o

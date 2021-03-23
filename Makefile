@@ -70,9 +70,10 @@ VULCAN_REPO        = https://github.com/sancus-pma/vulcan.git
 VULCAN_FORK        = https://github.com/SteffieJoosen/vulcan.git
 
 # See http://www.ti.com/tool/MSP430-GCC-OPENSOURCE
-TI_MSPGCC_URL         = http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSPGCC/latest/exports
-TI_MSPGCC_VER         = 8.3.0.16
-TI_MSPGCC_SUPPORT_VER = 1.208
+TI_MSPGCC_DIR         = 9_3_0_1
+TI_MSPGCC_URL	        = https://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSPGCC/$(TI_MSPGCC_DIR)/export
+TI_MSPGCC_VER         = 9.3.0.31
+TI_MSPGCC_SUPPORT_VER = 1.211
 TI_MSPGCC_NAME        = msp430-gcc-$(TI_MSPGCC_VER)-source-patches
 TI_MSPGCC_TBZ         = $(TI_MSPGCC_NAME).tar.bz2
 TI_MSPGCC_SUPPORT     = msp430-gcc-support-files
@@ -109,10 +110,11 @@ CMAKE_FLAGS_SLLVM += -DLLVM_PARALLEL_LINK_JOBS=2
 endif
 CMAKE_FLAGS_SLLVM += -DCMAKE_BUILD_TYPE=$(BUILD_TYPE)
 CMAKE_FLAGS_SLLVM += -DCMAKE_INSTALL_PREFIX=$(INSTALLDIR)
-CMAKE_FLAGS_SLLVM += -DLLVM_TARGETS_TO_BUILD=MSP430
+CMAKE_FLAGS_SLLVM += -DLLVM_TARGETS_TO_BUILD="MSP430;RISCV"
 CMAKE_FLAGS_SLLVM += -DLLVM_ENABLE_PROJECTS="clang"
 CMAKE_FLAGS_SLLVM += -DLLVM_USE_LINKER=gold
 CMAKE_FLAGS_SLLVM += -DLLVM_ENABLE_PLUGINS=ON
+CMAKE_FLAGS_SLLVM += -DENABLE_EXPERIMENTAL_NEW_PASS_MANAGER=OFF
 #CMAKE_FLAGS_SLLVM += -DLLVM_TARGETS_TO_BUILD="MSP430;X86"
 #CMAKE_FLAGS_SLLVM += -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 #CMAKE_FLAGS_SLLVM += -DLLVM_ENABLE_ASSERTIONS=ON
@@ -555,6 +557,21 @@ diff:
 	$(GIT) -C $(SRCDIR_SANCUS_EXAMPLES) difftool
 	$(GIT) -C $(SRCDIR_VULCAN) difftool
 
+.PHONY: diff-sllvm
+diff-sllvm:
+	$(GIT) -C $(SRCDIR_SLLVM) difftool
+
+# EuroS&P 2021 submission
+.PHONY: checkout-sllvm-0.9b
+checkout-sllvm-0.9b:
+	$(GIT) checkout sllvm-0.9b
+	$(GIT) -C $(SRCDIR_SLLVM) checkout sllvm-0.9b
+
+.PHONY: checkout-master
+checkout-master:
+	$(GIT) checkout master
+	$(GIT) -C $(SRCDIR_SLLVM) checkout master
+
 .PHONY: sync
 sync: sync-llvm
 sync: sync-legacy-sancus
@@ -564,7 +581,8 @@ sync: sync-vulcan
 sync-llvm:
 	$(GIT) -C $(SRCDIR_SLLVM) fetch upstream
 	$(GIT) -C $(SRCDIR_SLLVM) checkout master
-	$(GIT) -C $(SRCDIR_SLLVM) merge upstream/master
+	$(GIT) -C $(SRCDIR_SLLVM) merge upstream/main
+	#(GIT) -C $(SRCDIR_SLLVM) rebase upstream/main
 
 .PHONY: sync-legacy-sancus
 sync-legacy-sancus:

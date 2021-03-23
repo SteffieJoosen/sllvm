@@ -1,0 +1,13 @@
+EXE = keypad.ifc.nemdef
+
+#keypad.nemdef.s: LLCFLAGSNEMDEF += -debug-only=msp430-nemesis-defender
+#keypad.nemdef.s: LLCFLAGSNEMDEF += -msp430-nemesis-defender-emit-cfg=true
+#keypad.nemdef.s: LLCFLAGSNEMDEF += -print-machineinstrs
+#keypad.nemdef.s: LLCFLAGSNEMDEF += -filter-print-funcs=keypad_
+
+include ../Makefile.include
+
+LDFLAGS += -lsancus-step
+
+$(EXE).nomac: keypad.nemdef.o
+$(EXE).nomac: main.o
