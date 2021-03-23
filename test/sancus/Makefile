@@ -39,6 +39,7 @@ DMADEF =
 DMADEF += dma_class_5
 DMADEF += dma_class_51
 DMADEF += triangle
+DMADEF += test
 DMADEF += diamond
 DMADEF += fork
 DMADEF += multifork
