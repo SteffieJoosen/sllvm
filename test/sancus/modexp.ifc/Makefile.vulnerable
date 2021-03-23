@@ -1,0 +1,8 @@
+EXE = modexp.ifc.vulnerable
+
+include ../Makefile.include
+
+LDFLAGS += -lsancus-step
+
+$(EXE).nomac: modexp.o
+$(EXE).nomac: main.o

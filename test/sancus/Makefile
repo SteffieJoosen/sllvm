@@ -33,9 +33,16 @@ PYTHONPATH = ../../sancus/crypto
 RMDIR = rm -rf
 MKDIR = mkdir -p
 PYTHON = PYTHONPATH=$(PYTHONPATH) python3
+LATEXMK = latexmk
+
+NEMDEF =
+
+# 0) Test internalized (constant-time) compiler-rt operations
+NEMDEF += multiply2
+NEMDEF += divide
+NEMDEF += mul32
 
 # 1) Nemdef unit tests (have high code coverage)
-NEMDEF =
 NEMDEF += triangle
 NEMDEF += diamond
 NEMDEF += fork
@@ -55,33 +62,84 @@ NEMDEF += ifthenlooplooptail
 #                        (MSPGCC has a similar timing channel [Cuyt])
 #   o compiler-rt (LLVM): has no support for MSP430
 NEMDEF += mulhi3
+NEMDEF += mulhi3.ifc
 
 # 3) Primitives from cryptographic libraries
+
 # [Agat, 2000]
 #NEMDEF +=
+
 # [Molnar, 2005] (section 5.1)
 #NEMDEF +=
+
 # [Coppens, 2009] (section 4)
+#NEMDEF +=
+
 # "The following is an example in pseudocode based on Applied Cryptography by
 #   Bruce Schneier." [Wikipedia]
 NEMDEF += modexp
-# [Mantel, 2015] (sections 2 and 4)
-#NEMDEF +=
+NEMDEF += modexp.ifc
+
 # [Almeida, 2016]
 #NEMDEF +=
+
 # [Dewald, 2017] (section 6.2) => source code is in paper
 #NEMDEF +=
+
 # [Wu, 2018] (section 7)
 #NEMDEF += threeway   # Useless since LLVM generates CT code for mu() :-/
+NEMDEF += twofish
+NEMDEF += twofish.ifc
+
 # [Simon, 2018] (section 4.1.2)
 # OpenSSL, mbedTLS
 #NEMDEF +=
+
 # [Cauligi, 2019] (section 5.1)
 #NEMDEF +=
 
+# AES-dust (https://github.com/odzhan/aes_dust)
+#NEMDEF += aesdust  # Loop analysis fails (because of -O0)
+
+
 # 4) Sancus applications (inspired on applications from Nemesis paper)
 NEMDEF += bsl
-NEMDEF += keypad   # TODO: Support "secret return types" (or use dummy param)
+NEMDEF += bsl.ifc
+NEMDEF += keypad     # TODO: Support "secret return types" (or use dummy param)
+NEMDEF += keypad.ifc # TODO: Support "secret return types" (or use dummy param)
+
+# 5) Benchmark programs from transforming Out Timing Leaks, More or Less (2015)
+#    (Heiko Mantel and Artem Starostin)
+NEMDEF += sharevalue
+NEMDEF += sharevalue.ifc
+NEMDEF += kruskal
+NEMDEF += kruskal.ifc
+NEMDEF += mulmod8
+NEMDEF += mulmod8.ifc
+NEMDEF += modexp2
+NEMDEF += modexp2.ifc
+
+# 6) TI MSP430 competitive benchmarking suite
+NEMDEF += math8
+NEMDEF += math8.ifc
+NEMDEF += matrixcc8
+NEMDEF += matrixcc8.ifc
+NEMDEF += switch8
+NEMDEF += switch8.ifc
+NEMDEF += math16
+NEMDEF += math16.ifc
+NEMDEF += matrixcc16
+NEMDEF += matrixcc16.ifc
+NEMDEF += switch16
+NEMDEF += switch16.ifc
+NEMDEF += math32
+NEMDEF += math32.ifc
+NEMDEF += mathf
+NEMDEF += mathf.ifc
+NEMDEF += ffilter
+NEMDEF += ffilter.ifc
+NEMDEF += matrixmul
+NEMDEF += matrixmul.ifc
 
 #--------------------------------------------------------------------------
 
@@ -98,7 +156,8 @@ nemdef-sim  : $(NEMDEF_SIM)
 nemdef-pp   : $(NEMDEF_PP)
 	$(RMDIR) $(RESULT_DIR)
 	$(MKDIR) $(RESULT_DIR)
-	$(PYTHON) pp2.py > $(RESULT_DIR)/performance.csv
+	$(PYTHON) pp2.py $(RESULT_DIR) > $(RESULT_DIR)/summary.txt
+	#$(LATEXMK) -pdf -outdir=$(RESULT_DIR) $(RESULT_DIR)/performance.tex
 
 nemdef-clean: $(NEMDEF_CLEAN)
 

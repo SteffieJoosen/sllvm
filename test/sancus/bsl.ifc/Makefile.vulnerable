@@ -1,0 +1,8 @@
+EXE = bsl.ifc.vulnerable
+
+include ../Makefile.include
+
+LDFLAGS += -lsancus-step
+
+$(EXE).nomac: bsl.o
+$(EXE).nomac: main.o
