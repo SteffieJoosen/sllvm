@@ -1,0 +1,11 @@
+EXE = ifthenloopif.dmadef
+
+ifthenloopif.ll: CFLAGS += -Os
+#ifthenloopif.dmadef.s: LLCFLAGSDMADEF += -msp430-dma-defender-emit-cfg=true
+
+include ../Makefile.include
+
+LDFLAGS += -lsancus-step
+
+$(EXE).nomac: ifthenloopif.dmadef.o
+$(EXE).nomac: main.o
