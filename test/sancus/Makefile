@@ -224,10 +224,12 @@ LATEXMK = latexmk
 
 # 1) Nemdef unit tests (have high code coverage)
 DMADEF =
-DMADEF += dma_class_5
-DMADEF += dma_class_51
+DMADEF += dma_class_5_mov
+DMADEF += dma_class_5_add
+DMADEF += dma_class_3_mov
 DMADEF += triangle
 DMADEF += test
+
 
 # 2) Compiler runtime functions (e.g. Routines for integer arithmetic)
 #   o libgcc      (GCC) : gcc-8.2.0/libgcc/config/msp430/mpy.c

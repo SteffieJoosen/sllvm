@@ -9,12 +9,11 @@ int indirect_enter(__attribute__((secret)) int a, int b)
 
   if (a < b)
   {
-    result = 5;
     v += 24;
-    return a;
+    result += v;
   }
-  else {
-    u += 23;
-    return u;
-  }
+    result += u;
+    return result;
 }
+
+

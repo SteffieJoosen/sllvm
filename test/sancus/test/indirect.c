@@ -1,26 +1,15 @@
 #include "indirect.h"
-#include <stdlib.h> 
 
-int v;
-int u;
-
-struct P {
-    int val;
-};
-
-//static struct P p = {2};
-//static struct P q = {3};
+const int digits[] = {0,1,2,3,4,5,6,7,8,9}; 
 
 int indirect_enter(__attribute__((secret)) int a, int b)
-{
-  //struct P *pointerp  = &p;
-  //struct P *pointerq = &q;
+{ 
   
-  if (a < b)
-  {
-    v = 24;
-    return 4;
+  int result = digits[3];
+  if (a < b) {
+    result = 13;
   }
-  u = 23;
-  return u;
+    return result;
+  
 }
+
