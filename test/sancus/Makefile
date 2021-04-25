@@ -229,6 +229,7 @@ DMADEF += dma_class_5_add
 DMADEF += dma_class_3_mov
 DMADEF += triangle
 DMADEF += test
+DMADEF += test2
 
 
 # 2) Compiler runtime functions (e.g. Routines for integer arithmetic)

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sancus-main" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sancus-main/sancus-compiler" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sancus-main/sancus-core" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sancus-main/sancus-core/core/sim/verilator/cpp-optparse" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sancus-main/sancus-core/core/sim/verilator/loguru" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sancus-main/sancus-examples" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sancus-main/sancus-support" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sllvm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vulcan" vcs="Git" />
+  </component>
+</project>
