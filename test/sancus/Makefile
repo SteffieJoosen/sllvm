@@ -224,12 +224,13 @@ LATEXMK = latexmk
 
 # 1) Nemdef unit tests (have high code coverage)
 DMADEF =
-DMADEF += dma_class_5_mov
-DMADEF += dma_class_5_add
-DMADEF += dma_class_3_mov
+DMADEF += dma_class_5_mov_data
+DMADEF += dma_class_5_add_data
+DMADEF += dma_class_3_mov_data
+DMADEF += dma_class_3_mov_progr
+DMADEF += dma_class_3_mov_periph
 DMADEF += triangle
 DMADEF += test
-DMADEF += test2
 
 
 # 2) Compiler runtime functions (e.g. Routines for integer arithmetic)
