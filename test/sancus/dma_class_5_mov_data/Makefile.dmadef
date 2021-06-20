@@ -1,13 +1,13 @@
-EXE = indirect.dmadef
+EXE = globalmov.dmadef
 
-indirect.ll: CFLAGS += -Os
+globalmov.ll: CFLAGS += -Os
 
-#indirect.dmadef.s: LLCFLAGSDMADEF += -debug-only=msp430-dma-defender
-#indirect.dmadef.s: LLCFLAGSDMADEF += -msp430-dma-defender-emit-cfg=true
+#globalmov.dmadef.s: LLCFLAGSDMADEF += -debug-only=msp430-dma-defender
+#globalmov.dmadef.s: LLCFLAGSDMADEF += -msp430-dma-defender-emit-cfg=true
 
 include ../Makefile.include
 
 LDFLAGS += -lsancus-step
 
-$(EXE).nomac: indirect.dmadef.o
+$(EXE).nomac: globalmov.dmadef.o
 $(EXE).nomac: main.o

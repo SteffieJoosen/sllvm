@@ -1,7 +1,7 @@
-sllvm_pm_indirect_data_start = .;
-*(.sllvm.data.indirect)
-*(.sllvm.data.lr1addr.indirect) /* Make sure ptr to local sp is put last */
-sllvm_pm_indirect_data_end = .;
+sllvm_pm_globaladd_data_start = .;
+*(.sllvm.data.globaladd)
+*(.sllvm.data.lr1addr.globaladd) /* Make sure ptr to local sp is put last */
+sllvm_pm_globaladd_data_end = .;
 
 sllvm_pm_sancus_step_data_start = .;
 *(.sllvm.data.sancus_step)

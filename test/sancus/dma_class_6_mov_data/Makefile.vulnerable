@@ -1,0 +1,10 @@
+EXE = globalmov2.vulnerable
+
+globalmov2.ll: CFLAGS += -Os
+
+include ../Makefile.include
+
+LDFLAGS += -lsancus-step
+
+$(EXE).nomac: globalmov2.o
+$(EXE).nomac: main.o

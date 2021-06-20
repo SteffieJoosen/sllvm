@@ -3,7 +3,7 @@
 #include "sancus_support/sancus_step.h"
 
 #include "nemdef.h"
-#include "indirect.h"
+#include "localvar.h"
 
 asm(".section __interrupt_vector_10,\"ax\",@progbits \n\t"
     ".word timerA_isr_entry2                         \n\t");
@@ -21,10 +21,10 @@ int main(void)
   __ss_init();
 #endif
 
-  sancus_enable(&indirect);
+  sancus_enable(&localvar);
 
-  ATTACK(indirect_enter, 1, 2);
-  ATTACK(indirect_enter, 2, 1);
+  ATTACK(localvar_enter, 1, 2);
+  ATTACK(localvar_enter, 2, 1);
 
   EXIT();
 

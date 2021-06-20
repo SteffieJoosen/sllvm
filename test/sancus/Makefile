@@ -41,6 +41,7 @@ NEMDEF =
 NEMDEF += multiply2
 NEMDEF += divide
 NEMDEF += mul32
+NEMDEF += test
 
 # 1) Nemdef unit tests (have high code coverage)
 NEMDEF += triangle
@@ -224,12 +225,13 @@ LATEXMK = latexmk
 
 # 1) Nemdef unit tests (have high code coverage)
 DMADEF =
+DMADEF += dma_class_2
+DMADEF += dma_class_6_mov_data
 DMADEF += dma_class_5_mov_data
 DMADEF += dma_class_5_add_data
 DMADEF += dma_class_3_mov_data
-DMADEF += dma_class_3_mov_progr
-DMADEF += dma_class_3_mov_periph
-DMADEF += triangle
+DMADEF += dma_SP_check1
+DMADEF += dma_SP_check2
 DMADEF += test
 
 

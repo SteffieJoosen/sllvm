@@ -1,10 +1,10 @@
-EXE = indirect.vulnerable
+EXE = globalmov.vulnerable
 
-indirect.ll: CFLAGS += -Os
+globalmov.ll: CFLAGS += -Os
 
 include ../Makefile.include
 
 LDFLAGS += -lsancus-step
 
-$(EXE).nomac: indirect.o
+$(EXE).nomac: globalmov.o
 $(EXE).nomac: main.o

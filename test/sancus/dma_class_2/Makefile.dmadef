@@ -1,6 +1,6 @@
-EXE = indirect.dmadef
+EXE = localvar.dmadef
 
-indirect.ll: CFLAGS += -Os
+localvar.ll: CFLAGS += -Os
 
 #indirect.dmadef.s: LLCFLAGSDMADEF += -debug-only=msp430-dma-defender
 #indirect.dmadef.s: LLCFLAGSDMADEF += -msp430-dma-defender-emit-cfg=true
@@ -9,5 +9,5 @@ include ../Makefile.include
 
 LDFLAGS += -lsancus-step
 
-$(EXE).nomac: indirect.dmadef.o
+$(EXE).nomac: localvar.dmadef.o
 $(EXE).nomac: main.o

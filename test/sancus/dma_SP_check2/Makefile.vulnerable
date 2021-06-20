@@ -1,0 +1,10 @@
+EXE = SPcheck2.vulnerable
+
+SPcheck2.ll: CFLAGS += -Os
+
+include ../Makefile.include
+
+LDFLAGS += -lsancus-step
+
+$(EXE).nomac: SPcheck2.o
+$(EXE).nomac: main.o

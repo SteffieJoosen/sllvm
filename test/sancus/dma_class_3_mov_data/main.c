@@ -3,7 +3,7 @@
 #include "sancus_support/sancus_step.h"
 
 #include "nemdef.h"
-#include "indirect.h"
+#include "pointglobal.h"
 
 asm(".section __interrupt_vector_10,\"ax\",@progbits \n\t"
     ".word timerA_isr_entry2                         \n\t");
@@ -21,11 +21,11 @@ int main(void)
   __ss_init();
 #endif
 
-  sancus_enable(&indirect);
+  sancus_enable(&pointglobal);
   int x[7] = {1,2,3,4,5,6,7};
   int y[7] = {1,2,3,4,5,6,7};
-  ATTACK(indirect_enter, x, y, 1, 2);
-  ATTACK(indirect_enter, y, x, 2, 1);
+  ATTACK(pointglobal_enter, x, y, 1, 2);
+  ATTACK(pointglobal_enter, y, x, 2, 1);
 
   EXIT();
 
